@@ -1,0 +1,9 @@
+# Tomcat
+server:
+  port: 90
+
+
+spring:
+  # 环境 dev|test|prod
+  profiles:
+    active: dev

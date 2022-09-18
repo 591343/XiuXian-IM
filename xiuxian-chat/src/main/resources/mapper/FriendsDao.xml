@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiuxian.chat.dao.FriendsDao">
+
+    <select id="getFriendsRelByXiuxianGroupId" resultType="com.xiuxian.chat.entity.FriendsEntity">
+        select * from tb_freinds tf where tf.friend_xiuxian_id =#{xiuxianGroupId}
+    </select>
+
+    <select id="getXiuxianUserNumberByXiuxianGroupId" resultType="Integer">
+        select Count(*) from tb_freinds tf where tf.friend_xiuxian_id =#{xiuxianGroupId}
+    </select>
+
+    <select id="getFriendsRelByselfXiuxianId" resultType="com.xiuxian.chat.entity.FriendsEntity">
+        select * from tb_freinds tf where tf.self_xiuxian_id =#{selfXiuxianId} and type=0
+    </select>
+
+
+    <select id="getGroupsRelByselfXiuxianId" resultType="com.xiuxian.chat.entity.FriendsEntity">
+        select * from tb_freinds tf where tf.self_xiuxian_id =#{selfXiuxianId} and type=1
+    </select>
+
+
+    <select id="getFriendRelByselfXiuxianIdAndFriendXiuxianId" resultType="com.xiuxian.chat.entity.FriendsEntity">
+        select * from tb_freinds tf where tf.self_xiuxian_id =#{selfXiuxianId} and tf.friend_xiuxian_id =#{friendXiuxianId}
+    </select>
+
+
+</mapper>

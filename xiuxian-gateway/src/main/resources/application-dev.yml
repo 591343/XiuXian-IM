@@ -1,0 +1,66 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      httpclient:
+        websocket:
+          max-frame-payload-length: 10485760  # 需要设置的大小
+
+      routes:
+        - id: chat_route
+            #            lb(load balance负载均衡) 路由到聊天服务,精确路由放在前面
+          uri: lb://xiuxian-chat
+          predicates:
+            - Path=/xiuxian-chat/api/**
+          filters:
+            - StripPrefix=1
+        #          filters:
+        #            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        # SockJS首次info路由
+        # SockJS route
+        # Normal Websocket route
+
+        - id: websocket_route
+          uri: lb://xiuxian-websocket
+          predicates:
+            - Path=/xiuxian-websocket/ws/info/**
+          filters:
+            - StripPrefix=1
+
+
+        - id: websocket_route
+          uri: lb:ws://xiuxian-websocket
+          predicates:
+            - Path=/xiuxian-websocket/ws/**
+          filters:
+            - StripPrefix=1
+
+        - id: websocket_api_route
+          uri: lb://xiuxian-websocket
+          predicates:
+            - Path=/xiuxian-websocket/api/ws/**
+          filters:
+            - StripPrefix=1
+
+        - id: renren_route
+            #            lb(load balance负载均衡) 路由到renren-用户服务,精确路由放在前面
+          uri: lb://renren-api
+          predicates:
+            - Path=/renren-api/api/**
+          filters:
+            - StripPrefix=1
+
+        - id: thirdparty_route
+            #            lb(load balance负载均衡) 路由到第三方服务,精确路由放在前面
+          uri: lb://xiuxian-thirdparty
+          predicates:
+            - Path=/xiuxian-thirdparty/api/**
+          filters:
+            - StripPrefix=1
+
+
+
+  application:
+    name: xiuxian-gateway

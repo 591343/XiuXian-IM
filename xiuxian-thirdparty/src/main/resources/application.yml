@@ -1,0 +1,48 @@
+# Tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 1000
+      min-spare: 30
+  port: 8088
+  servlet:
+    session:
+      cookie:
+        http-only: true
+
+knife4j:
+  enable: true
+  basic:
+    enable: false
+    username: admin
+    password: admin
+  setting:
+    enableFooter: false
+
+aliyun:
+  oss:
+    domain: https://xiuxian-im.oss-cn-beijing.aliyuncs.com
+    prefix: userprofile
+    endPoint: oss-cn-beijing.aliyuncs.com
+    accessKeyId: LTAI5tFLCFn8cRDQPApMP8sJ
+    accessKeySecret: ha6SPdFOwvu3F9bRs62LzmCgrwiPsY
+    bucketName: xiuxian-im
+
+spring:
+  # 环境 dev|test|prod
+  profiles:
+    active: dev
+  messages:
+    encoding: UTF-8
+    basename: i18n/messages
+  # jackson时间格式化
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+

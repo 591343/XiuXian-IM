@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiuxian.chat.dao.ChatMessageDao">
+
+    <select id="getChatMessagesByFromId" resultType="com.xiuxian.chat.po.ChatMessagePO">
+        select from_id,to_id,content,remote_media_url,date,chat_message_type, if(from_id=#{fromId},true,false) 'self'
+        from (select *
+              from (select tcm.from_id,
+                           tcm.to_id,
+                           tcm.content,
+                           tcm.remote_media_url,
+                           tcm.from_time 'date',tcm.chat_message_type
+                    from tb_chat_message tcm
+                    where tcm.from_id = #{fromId}
+                      and tcm.to_id = #{toId}
+                    union all
+                    select tcm.from_id,
+                           tcm.to_id,
+                           tcm.content,
+                           tcm.remote_media_url,
+                           tcm.from_time 'date',tcm.chat_message_type
+                    from tb_chat_message tcm
+                    where tcm.from_id = #{toId}
+                          and tcm.to_id = #{fromId}) tb
+              order by date desc limit #{limit}) sort_tb
+        order by date;
+    </select>
+
+    <select id="getChatMessagesByxiuxianGroupId" resultType="com.xiuxian.chat.po.ChatMessagePO">
+        select from_id,to_id,content,remote_media_url,date,chat_message_type, if(from_id=#{fromId},true,false) 'self'
+        from (select *
+            from (select tcm.from_id,
+            tcm.to_id,
+            tcm.content,
+            tcm.remote_media_url,
+            tcm.from_time 'date',tcm.chat_message_type
+            from tb_chat_message tcm
+            where tcm.to_id =#{xiuxianGroupId}) tb
+            order by date desc limit #{limit}) sort_tb
+        order by date;
+    </select>
+
+</mapper>
