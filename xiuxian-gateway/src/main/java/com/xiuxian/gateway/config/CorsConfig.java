@@ -14,9 +14,10 @@ import org.springframework.web.util.pattern.PathPatternParser;
 
 
 /**
- * 网关跨域配置
- * @Author 
- * @Create 2019-04-19 15:29:54
+ *
+ * @Author Chen Xiao
+ * @Description 网关跨域配置
+ * @Create Created in 2022/9/15
  */
 @Configuration
 public class CorsConfig {

@@ -12,9 +12,10 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * 跨域请求头处理过滤器扩展
- * @Author 
- * @Create 2019-04-22 14:20:06
+ *
+ * @Author Chen Xiao
+ * @Description 跨域请求头处理过滤器扩展
+ * @Create Created in 2022/9/15
  */
 public class CorsResponseHeaderFilter implements GlobalFilter, Ordered {
 	@Override
