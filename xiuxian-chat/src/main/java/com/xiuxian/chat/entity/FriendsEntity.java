@@ -35,11 +35,10 @@ public class FriendsEntity {
     /**
      * 备注
      */
-
     private String remark;
 
     /**
-     * 朋友类型 0：朋友 1：群组
+     * 朋友类型 0：朋友 1：群组 2.待验证
      */
     private Integer type;
 
@@ -47,4 +46,9 @@ public class FriendsEntity {
      * 分类名称
      */
     private String initial;
+
+    /**
+     * 朋友权限 朋友的权限,0:聊天、朋友圈、修仙运动 1:仅聊天
+     */
+    private Integer permission;
 }

@@ -31,7 +31,11 @@ public class FeignHeaderInterceptor implements RequestInterceptor {
         Enumeration<String> headerNames = request.getHeaderNames();
         if (headerNames != null) {
             while (headerNames.hasMoreElements()) {
+
                 String name = headerNames.nextElement();
+                if (name.equals("content-length")){
+                    continue;
+                }
                 String values = request.getHeader(name);
                 template.header(name, values);
             }

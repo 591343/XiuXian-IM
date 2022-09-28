@@ -4,11 +4,11 @@
 <mapper namespace="com.xiuxian.chat.dao.GroupDao">
 
 
-
     <select id="getByXiuXianGroup" resultType="com.xiuxian.chat.entity.GroupEntity">
-        select * from tb_group where xiuxian_group_id = #{xiuxianGroupId}
+        select *
+        from tb_group
+        where xiuxian_group_id = #{xiuxianGroupId}
     </select>
-
 
 
 </mapper>

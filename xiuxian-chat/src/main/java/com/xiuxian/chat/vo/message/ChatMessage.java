@@ -1,5 +1,6 @@
-package com.xiuxian.websocket.message;
+package com.xiuxian.chat.vo.message;
 
+import com.xiuxian.chat.vo.chatlist.ChatUser;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

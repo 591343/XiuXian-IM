@@ -7,8 +7,12 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.util.HashMap;
 
 
+@EnableTransactionManagement
 @ComponentScan(value = "com.xiuxian")
 @EnableFeignClients(basePackages = "com.xiuxian.chat.feign")
 @EnableDiscoveryClient
@@ -23,6 +27,8 @@ public class XiuxianChatApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		StringBuilder b=new StringBuilder();
 		b.deleteCharAt(b.length()-1);
+
+
 		return application.sources(XiuxianChatApplication.class);
 	}
 }

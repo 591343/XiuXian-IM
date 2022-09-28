@@ -49,3 +49,9 @@ spring:
 #        max-idle: 10      # 连接池中的最大空闲连接
 #        min-idle: 5       # 连接池中的最小空闲连接
 
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000

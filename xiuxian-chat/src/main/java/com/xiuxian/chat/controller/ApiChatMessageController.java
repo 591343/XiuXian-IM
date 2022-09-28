@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 聊天列表接口
+ * 聊天消息接口
  *
  * @author Chenxiao 591343671@qq.com
  */
 @RestController
 @RequestMapping("/api")
-@Api(tags="聊天列表接口")
+@Api(tags="聊天消息接口")
 public class ApiChatMessageController {
 
 
@@ -39,7 +39,7 @@ public class ApiChatMessageController {
 
     @Login
     @PostMapping("/xiuxianchatmessage/save/chatmessage")
-    @ApiOperation(value="更新聊天消息的接收时间戳")
+    @ApiOperation(value="保存聊天消息")
     public Result<Long> saveChatMessage(@RequestBody ChatMessageEntity chatMessageEntity){
         chatMessageService.saveChatMessage(chatMessageEntity);
         return new Result<Long>().ok(chatMessageEntity.getId());

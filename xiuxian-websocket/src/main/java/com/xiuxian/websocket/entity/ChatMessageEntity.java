@@ -9,7 +9,6 @@ import lombok.Data;
  * @author Chenxiao 591343671@qq.com
  */
 @Data
-
 public class ChatMessageEntity {
     /**
      * 聊天消息id

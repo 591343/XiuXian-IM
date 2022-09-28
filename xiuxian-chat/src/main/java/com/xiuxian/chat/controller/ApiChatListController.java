@@ -4,6 +4,7 @@ package com.xiuxian.chat.controller;
 import com.xiuxian.chat.annotation.Login;
 import com.xiuxian.chat.entity.ChatListEntity;
 import com.xiuxian.chat.service.ChatListService;
+import com.xiuxian.chat.vo.chatlist.ChatListItemVo;
 import com.xiuxian.chat.vo.chatlist.ChatListVo;
 import com.xiuxian.common.utils.Result;
 
@@ -30,8 +31,16 @@ public class ApiChatListController {
     @GetMapping("/xiuxianchatlist/chatlist")
     @ApiOperation(value="获取聊天列表信息", response= ChatListVo.class)
     public Result<ChatListVo> getChatList(@RequestParam("selfXiuxianId") String selfXiuxianId){
-        ChatListVo chatListVo = chatListService.getLatestChatList(selfXiuxianId);
+        ChatListVo chatListVo = chatListService.getLatestChatList(selfXiuxianId,"",false);
         return new Result<ChatListVo>().ok(chatListVo);
+    }
+
+    @Login
+    @GetMapping("/xiuxianchatlist/chatlistitem")
+    @ApiOperation(value="获取单个聊天列表项", response= ChatListItemVo.class)
+    public Result<ChatListItemVo> getChatListItem(@RequestParam("selfXiuxianId") String selfXiuxianId,@RequestParam("friendXiuxianId") String friendXiuxianId){
+        ChatListItemVo chatListItemVo = chatListService.getChatListItem(selfXiuxianId,friendXiuxianId);
+        return new Result<ChatListItemVo>().ok(chatListItemVo);
     }
 
 

@@ -9,7 +9,7 @@
 package com.xiuxian.chat.constant;
 
 /**
- * 常量
+ * 通用常量
  *
  * @author Chenxiao 591343671@qq.com
  */
@@ -22,11 +22,36 @@ public interface Constant {
     /**
      *  朋友类型
      */
-    int Friend_TYPE= 0;
+    int FRIEND_TYPE = 0;
 
     /**
      *  群组类型
      */
-    int Group_TYPE=1;
+    int GROUP_TYPE = 1;
+
+    /**
+     *  待验证类型
+     */
+    int VALID_TYPE = 2;
+
+    /**
+     * 0:聊天、朋友圈、修仙运动
+     */
+    int NOT_ONLY_CHAT = 0;
+
+    /**
+     *  1:仅聊天
+     */
+    int ONLY_CHAT = 1;
+
+    /**
+     * 文本消息
+     */
+    int TEXT_CHAT_MESSAGE_TYPE=0;
+
+    /**
+     * 图片消息
+     */
+    int IMAGE_CHAT_MESSAGE_TYPE=1;
 
 }

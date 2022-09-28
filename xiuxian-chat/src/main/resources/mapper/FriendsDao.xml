@@ -4,25 +4,25 @@
 <mapper namespace="com.xiuxian.chat.dao.FriendsDao">
 
     <select id="getFriendsRelByXiuxianGroupId" resultType="com.xiuxian.chat.entity.FriendsEntity">
-        select * from tb_freinds tf where tf.friend_xiuxian_id =#{xiuxianGroupId}
+        select * from tb_friends tf where tf.friend_xiuxian_id =#{xiuxianGroupId}
     </select>
 
     <select id="getXiuxianUserNumberByXiuxianGroupId" resultType="Integer">
-        select Count(*) from tb_freinds tf where tf.friend_xiuxian_id =#{xiuxianGroupId}
+        select Count(*) from tb_friends tf where tf.friend_xiuxian_id =#{xiuxianGroupId}
     </select>
 
     <select id="getFriendsRelByselfXiuxianId" resultType="com.xiuxian.chat.entity.FriendsEntity">
-        select * from tb_freinds tf where tf.self_xiuxian_id =#{selfXiuxianId} and type=0
+        select * from tb_friends tf where tf.self_xiuxian_id =#{selfXiuxianId} and type=0
     </select>
 
 
     <select id="getGroupsRelByselfXiuxianId" resultType="com.xiuxian.chat.entity.FriendsEntity">
-        select * from tb_freinds tf where tf.self_xiuxian_id =#{selfXiuxianId} and type=1
+        select * from tb_friends tf where tf.self_xiuxian_id =#{selfXiuxianId} and type=1
     </select>
 
 
     <select id="getFriendRelByselfXiuxianIdAndFriendXiuxianId" resultType="com.xiuxian.chat.entity.FriendsEntity">
-        select * from tb_freinds tf where tf.self_xiuxian_id =#{selfXiuxianId} and tf.friend_xiuxian_id =#{friendXiuxianId}
+        select * from tb_friends tf where tf.self_xiuxian_id =#{selfXiuxianId} and tf.friend_xiuxian_id =#{friendXiuxianId}
     </select>
 
 

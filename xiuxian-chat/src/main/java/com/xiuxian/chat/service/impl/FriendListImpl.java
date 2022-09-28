@@ -1,6 +1,7 @@
 package com.xiuxian.chat.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xiuxian.chat.dao.FriendsDao;
 import com.xiuxian.chat.entity.FriendsEntity;
 import com.xiuxian.chat.entity.GroupEntity;
@@ -31,7 +32,7 @@ public class FriendListImpl implements FriendListService {
     XiuXianGroupService xiuXianGroupService;
 
     @Override
-    public FriendListVo getFriendList(String selfXiuxianId) {
+    public FriendListVo getAllFriendList(String selfXiuxianId) {
         List<FriendsEntity> friendsList=friendsDao.getFriendsRelByselfXiuxianId(selfXiuxianId);
 
         List<FriendListItemVo> collect = friendsList.stream().map(item -> {
@@ -72,7 +73,21 @@ public class FriendListImpl implements FriendListService {
         return friendsDao.getFriendRelByselfXiuxianIdAndFriendXiuxianId(selfXiuxianId, friendXiuxianId);
     }
 
+    @Override
+    public FriendListItemVo getFriendListItem(String selfXiuxianId, String friendXiuxianId) {
+        FriendListItemVo friendListItemVo = new FriendListItemVo();
+        FriendsEntity friendsEntity = friendsDao.selectOne(new QueryWrapper<FriendsEntity>()
+                .eq("self_xiuxian_id", selfXiuxianId)
+                .eq("friend_xiuxian_id", friendXiuxianId));
+        if(friendsEntity!=null){
+            XiuXianUserEntity xiuXianUser = xiuXianUserService.getXiuXianUser(friendXiuxianId);
+            BeanUtils.copyProperties(friendsEntity,friendListItemVo);
+            BeanUtils.copyProperties(xiuXianUser,friendListItemVo);
+            return friendListItemVo;
+        }
 
+        return null;
+    }
 
 
 }

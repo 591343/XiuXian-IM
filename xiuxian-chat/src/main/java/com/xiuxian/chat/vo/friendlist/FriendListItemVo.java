@@ -40,6 +40,8 @@ public class FriendListItemVo {
     @ApiModelProperty(value = "朋友类型")
     private Integer type;
 
+    @ApiModelProperty(value = "朋友权限")
+    private Integer permission;
 
 
 

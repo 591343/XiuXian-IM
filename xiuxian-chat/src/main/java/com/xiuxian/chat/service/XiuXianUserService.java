@@ -12,7 +12,6 @@ import com.xiuxian.chat.entity.XiuXianUserEntity;
 public interface XiuXianUserService {
     XiuXianUserEntity getXiuXianUser(String xiuxianUserId);
     XiuXianUserEntity getXiuXianUserByMobile(String mobile);
-
     void addXiuxianUserInfo(XiuXianUserDTO xiuXianUserDTO);
 
     Integer isXiuXianUserExist(String xiuxianUserId);

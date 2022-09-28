@@ -1,6 +1,7 @@
 package com.xiuxian.chat.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xiuxian.chat.constant.Constant;
 import com.xiuxian.chat.dao.ChatListDao;
 import com.xiuxian.chat.entity.ChatListEntity;
@@ -41,9 +42,17 @@ public class ChatListServiceImpl implements ChatListService {
     XiuXianGroupService xiuXianGroupService;
 
     @Override
+    public ChatListVo getLatestChatList(String selfXiuxianId,String toId,Boolean single) {
+        List<ChatListEntity> chatLists;
+        if(single){
+            chatLists=chatListDao.selectList(new QueryWrapper<ChatListEntity>()
+                    .eq("self_xiuxian_id", selfXiuxianId)
+                    .eq("friend_xiuxian_id", toId));
 
-    public ChatListVo getLatestChatList(String selfXiuxianId) {
-        List<ChatListEntity> chatLists = chatListDao.getChatListBySelfXiuxianId(selfXiuxianId);
+        }else {
+            chatLists = chatListDao.getChatListBySelfXiuxianId(selfXiuxianId);
+        }
+
         //缓存用于保存查询的用户记录
         Map<String,ChatUser> chatUserMap=new HashMap<>();
         List<ChatListItemVo> collect = chatLists.stream().map(item -> {
@@ -51,7 +60,7 @@ public class ChatListServiceImpl implements ChatListService {
             String friendXiuxianId = item.getFriendXiuxianId();
             Integer chatType = item.getType();
             List<ChatMessagePO> chatMessagePOList=new ArrayList<>();
-            if(chatType==Constant.Friend_TYPE){
+            if(chatType==Constant.FRIEND_TYPE){
                 chatMessagePOList = chatMessageService.getChatMessagesByFrom(selfXiuxianId, friendXiuxianId, Constant.LIMIT);
             }else{
                 chatMessagePOList = chatMessageService.getChatMessagesByxiuxianGroupId(selfXiuxianId,friendXiuxianId,Constant.LIMIT);
@@ -63,7 +72,7 @@ public class ChatListServiceImpl implements ChatListService {
                 BeanUtils.copyProperties(chatMessagePO, chatMessageItemVo);
 
                 //当为群类型消息时才查询用户信息
-                if(chatType==Constant.Group_TYPE){
+                if(chatType==Constant.GROUP_TYPE){
                     if(!chatUserMap.containsKey(fromId)){
                         XiuXianUserEntity xiuXianUser = xiuXianUserService.getXiuXianUser(fromId);
                         BeanUtils.copyProperties(xiuXianUser,chatUser);
@@ -83,7 +92,7 @@ public class ChatListServiceImpl implements ChatListService {
             chatListItemVo.setRemark(friendsEntity.getRemark());
             chatListItemVo.setType(friendsEntity.getType());
 
-            if (chatType == Constant.Friend_TYPE) {
+            if (chatType == Constant.FRIEND_TYPE) {
                 XiuXianUserEntity xianUserEntity = xiuXianUserService.getXiuXianUser(friendXiuxianId);
                 BeanUtils.copyProperties(xianUserEntity, chatListItemVo);
 
@@ -104,6 +113,16 @@ public class ChatListServiceImpl implements ChatListService {
     @Override
     public void addChatList(ChatListEntity chatListEntity) {
         chatListDao.insert(chatListEntity);
+    }
+
+    @Override
+    public ChatListItemVo getChatListItem(String selfXiuxianId, String friendXiuxianId) {
+        ChatListVo latestChatList = getLatestChatList(selfXiuxianId, friendXiuxianId,true);
+
+        if(latestChatList.getChatList()!=null&&latestChatList.getChatList().size()!=0){
+            return latestChatList.getChatList().get(0);
+        }
+        return null;
     }
 
 }
