@@ -10,13 +10,11 @@ import com.xiuxian.chat.entity.GroupEntity;
 import com.xiuxian.chat.entity.XiuXianUserEntity;
 import com.xiuxian.chat.po.ChatMessagePO;
 import com.xiuxian.chat.service.*;
-import com.xiuxian.chat.vo.chatlist.ChatListItemVo;
-import com.xiuxian.chat.vo.chatlist.ChatListVo;
-import com.xiuxian.chat.vo.chatlist.ChatMessageItemVo;
-import com.xiuxian.chat.vo.chatlist.ChatUser;
+import com.xiuxian.chat.vo.chatlist.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,5 +122,32 @@ public class ChatListServiceImpl implements ChatListService {
         }
         return null;
     }
+
+    @Transactional
+    @Override
+    public void deleteChatListItem(ChatListItemRelVo chatListItemRelVo) {
+        //删除聊天列表项(单方面)
+        chatListDao.delete(new QueryWrapper<ChatListEntity>()
+                .eq("self_xiuxian_id", chatListItemRelVo.getSelfXiuxianId())
+                .eq("friend_xiuxian_id", chatListItemRelVo.getFriendXiuxianId()));
+
+        //删除聊天消息(单方面)
+        chatMessageService.deleteChatMessageByChatListItemRel(chatListItemRelVo);
+    }
+
+    /**
+     * 是否为聊天关系
+     * @param fromId
+     * @param toId
+     * @return
+     */
+    @Override
+    public Boolean isChatRel(String fromId, String toId) {
+        ChatListEntity chatListEntity = chatListDao.selectOne(new QueryWrapper<ChatListEntity>()
+                .eq("self_xiuxian_id", fromId)
+                .eq("friend_xiuxian_id", toId));
+        return chatListEntity!=null;
+    }
+
 
 }

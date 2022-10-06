@@ -66,7 +66,7 @@ public class NoticeMessageServiceImpl implements NoticeMessageService {
             Long noticeTime = item.getNoticeTime();
             long now = date.getTime();
             //如果添加好友申请超过3天则更改为已过期状态
-            if (now - noticeTime > NoticeMessageConstant.ADD_FRIEND_EXPIRED_TIME) {
+            if (now - noticeTime > NoticeMessageConstant.ADD_FRIEND_EXPIRED_TIME&&item.getStatus()!= ADDED_STATUS&&item.getStatus()!=EXPIREd_STATUS) {
                 NoticeMessageEntity noticeMessageEntity = new NoticeMessageEntity();
                 noticeMessageEntity.setId(item.getId());
                 noticeMessageEntity.setStatus(NoticeMessageConstant.EXPIREd_STATUS);
@@ -173,5 +173,18 @@ public class NoticeMessageServiceImpl implements NoticeMessageService {
                 .eq("to_id",toId)
                 .eq("notice_message_type",noticeMessageType)
                 .eq("status",status));
+    }
+
+    /**
+     * 只保留对方已添加消息
+     * @param fromId
+     * @param toId
+     */
+    @Override
+    public void deleteNoticeMessage(String fromId, String toId) {
+        noticeMessageDao.delete(new QueryWrapper<NoticeMessageEntity>().eq("from_id", toId)
+                .eq("to_id", fromId).ne("notice_message_type", SEND_MESSAGE_NOTICE));
+        noticeMessageDao.delete(new QueryWrapper<NoticeMessageEntity>().eq("from_id", fromId)
+                .eq("to_id", toId).ne("notice_message_type", ADD_FRIEND_NOTICE).ne("notice_message_type",SEND_MESSAGE_NOTICE));
     }
 }

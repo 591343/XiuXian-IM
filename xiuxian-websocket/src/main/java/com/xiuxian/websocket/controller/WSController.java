@@ -11,7 +11,6 @@ import com.xiuxian.websocket.message.NoticeMessage;
 import com.xiuxian.websocket.message.Ping;
 import com.xiuxian.websocket.message.Pong;
 
-import com.xiuxian.websocket.service.WSNoticeMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +35,6 @@ public class WSController {
 
     @Autowired
     private ChatMessageFeignService chatMessageFeignService;
-
-    @Autowired
-    private WSNoticeMessageService wsNoticeMessageService;
-
-    @Autowired
-    private NoticeMessageFeignService noticeMessageFeignService;
 
     //用于心跳检测
     @PostMapping("/heartbeatCheck")

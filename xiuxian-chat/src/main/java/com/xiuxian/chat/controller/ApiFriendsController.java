@@ -2,6 +2,8 @@ package com.xiuxian.chat.controller;
 
 import com.xiuxian.chat.annotation.Login;
 import com.xiuxian.chat.service.FriendsService;
+import com.xiuxian.chat.service.impl.ChatListServiceImpl;
+import com.xiuxian.chat.vo.chatlist.FriendListItemRelVo;
 import com.xiuxian.chat.vo.friend.AcceptFriendVo;
 import com.xiuxian.chat.vo.friend.AddFriendVo;
 import com.xiuxian.chat.vo.friendlist.GroupListVo;
@@ -49,6 +51,14 @@ public class ApiFriendsController {
     @ApiOperation(value = "接受好友申请")
     public Result acceptFriend(@RequestBody AcceptFriendVo acceptFriendVo){
         friendsService.acceptFriend(acceptFriendVo);
+        return new Result();
+    }
+
+    @Login
+    @PostMapping("/xiuxianfriend/deletefriend")
+    @ApiOperation(value = "删除好友")
+    public Result deleteFriend(@RequestBody FriendListItemRelVo friendListItemRelVo){
+        friendsService.deleteFriend(friendListItemRelVo);
         return new Result();
     }
 

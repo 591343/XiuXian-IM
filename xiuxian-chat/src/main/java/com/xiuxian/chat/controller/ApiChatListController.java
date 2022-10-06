@@ -4,6 +4,7 @@ package com.xiuxian.chat.controller;
 import com.xiuxian.chat.annotation.Login;
 import com.xiuxian.chat.entity.ChatListEntity;
 import com.xiuxian.chat.service.ChatListService;
+import com.xiuxian.chat.vo.chatlist.ChatListItemRelVo;
 import com.xiuxian.chat.vo.chatlist.ChatListItemVo;
 import com.xiuxian.chat.vo.chatlist.ChatListVo;
 import com.xiuxian.common.utils.Result;
@@ -49,6 +50,14 @@ public class ApiChatListController {
     @ApiOperation(value="添加聊天列表信息")
     public Result addChatList(@RequestBody ChatListEntity chatListEntity){
         chatListService.addChatList(chatListEntity);
+        return new Result();
+    }
+
+    @Login
+    @PostMapping("/xiuxianchalist/delete/chatlistitem")
+    @ApiOperation(value="删除聊天列表项信息")
+    public Result deleteChatListItem(@RequestBody ChatListItemRelVo chatListItemRelVo){
+        chatListService.deleteChatListItem(chatListItemRelVo);
         return new Result();
     }
 }

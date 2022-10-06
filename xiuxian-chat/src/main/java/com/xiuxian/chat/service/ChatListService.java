@@ -1,6 +1,7 @@
 package com.xiuxian.chat.service;
 
 import com.xiuxian.chat.entity.ChatListEntity;
+import com.xiuxian.chat.vo.chatlist.ChatListItemRelVo;
 import com.xiuxian.chat.vo.chatlist.ChatListItemVo;
 import com.xiuxian.chat.vo.chatlist.ChatListVo;
 
@@ -17,4 +18,8 @@ public interface ChatListService {
     void addChatList(ChatListEntity chatListEntity);
 
     ChatListItemVo getChatListItem(String selfXiuxianId, String friendXiuxianId);
+
+    void deleteChatListItem(ChatListItemRelVo chatListItemRelVo);
+
+    Boolean isChatRel(String fromId, String toId);
 }

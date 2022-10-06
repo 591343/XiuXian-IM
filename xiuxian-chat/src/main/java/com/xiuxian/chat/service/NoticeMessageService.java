@@ -25,4 +25,6 @@ public interface NoticeMessageService {
     Boolean  isSendValidMessage(String fromId,String toId);
 
     void updateNoticeMessageStatus(String fromId,String toId,Integer NoticeMessageType,Integer status,Integer updateStatus);
+
+    void deleteNoticeMessage(String fromId, String toId);
 }

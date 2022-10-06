@@ -4,6 +4,7 @@ package com.xiuxian.chat.service;
 
 import com.xiuxian.chat.entity.ChatMessageEntity;
 import com.xiuxian.chat.po.ChatMessagePO;
+import com.xiuxian.chat.vo.chatlist.ChatListItemRelVo;
 import com.xiuxian.chat.vo.request.ChatMessageUpdateTotimeVo;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface ChatMessageService {
     void updateChatMessageToTime(ChatMessageUpdateTotimeVo chatMessageUpdateTotimeVo);
 
     List<ChatMessagePO> getChatMessagesByxiuxianGroupId(String selfXiuxianId, String xiuxianGroupId, Integer limit);
+
+    void deleteChatMessageByChatListItemRel(ChatListItemRelVo chatListItemRelVo);
 }

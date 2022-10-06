@@ -1,6 +1,7 @@
 package com.xiuxian.chat.service;
 
 import com.xiuxian.chat.entity.FriendsEntity;
+import com.xiuxian.chat.vo.chatlist.FriendListItemRelVo;
 import com.xiuxian.chat.vo.friend.AcceptFriendVo;
 import com.xiuxian.chat.vo.friend.AddFriendVo;
 import com.xiuxian.chat.vo.message.NoticeMessage;
@@ -19,4 +20,6 @@ public interface FriendsService {
     Boolean isFriends(String fromId, String toId);
 
     void acceptFriend(AcceptFriendVo acceptFriendVo);
+
+    void deleteFriend(FriendListItemRelVo friendListItemRelVo);
 }

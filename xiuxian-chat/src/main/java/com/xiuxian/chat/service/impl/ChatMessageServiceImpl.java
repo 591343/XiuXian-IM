@@ -1,10 +1,13 @@
 package com.xiuxian.chat.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xiuxian.chat.dao.ChatMessageDao;
+import com.xiuxian.chat.entity.ChatListEntity;
 import com.xiuxian.chat.entity.ChatMessageEntity;
 import com.xiuxian.chat.po.ChatMessagePO;
 import com.xiuxian.chat.service.ChatMessageService;
+import com.xiuxian.chat.vo.chatlist.ChatListItemRelVo;
 import com.xiuxian.chat.vo.request.ChatMessageUpdateTotimeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,13 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     @Override
     public List<ChatMessagePO> getChatMessagesByxiuxianGroupId(String selfXiuxianId, String xiuxianGroupId, Integer limit) {
         return  chatMessageDao.getChatMessagesByxiuxianGroupId(selfXiuxianId,xiuxianGroupId,limit);
+    }
+
+    @Override
+    public void deleteChatMessageByChatListItemRel(ChatListItemRelVo chatListItemRelVo) {
+        chatMessageDao.delete(new QueryWrapper<ChatMessageEntity>()
+                .eq("from_id", chatListItemRelVo.getSelfXiuxianId())
+                .eq("to_id", chatListItemRelVo.getFriendXiuxianId()));
     }
 
 
