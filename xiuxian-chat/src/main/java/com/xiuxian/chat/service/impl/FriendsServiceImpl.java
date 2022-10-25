@@ -18,6 +18,8 @@ import com.xiuxian.chat.vo.chatlist.ChatUser;
 import com.xiuxian.chat.vo.chatlist.FriendListItemRelVo;
 import com.xiuxian.chat.vo.friend.AcceptFriendVo;
 import com.xiuxian.chat.vo.friend.AddFriendVo;
+import com.xiuxian.chat.vo.friend.ChangeFriendPermissionVo;
+import com.xiuxian.chat.vo.friend.ChangeFriendRemarkVo;
 import com.xiuxian.chat.vo.message.ChatMessage;
 import com.xiuxian.chat.vo.message.NoticeMessage;
 import com.xiuxian.chat.vo.message.NoticeMessageVo;
@@ -266,8 +268,23 @@ public class FriendsServiceImpl implements FriendsService {
         chatListService.deleteChatListItem(chatListItemRelVo);
     }
 
+    @Override
+    public void changeRemark(ChangeFriendRemarkVo changeFriendRemarkVo) {
+        FriendsEntity friendsEntity = new FriendsEntity();
+        friendsEntity.setRemark(changeFriendRemarkVo.getRemark());
+        friendsDao.update(friendsEntity,new UpdateWrapper<FriendsEntity>()
+                .eq("self_xiuxian_id",changeFriendRemarkVo.getSelfXiuxianId())
+                .eq("friend_xiuxian_id",changeFriendRemarkVo.getFriendXiuxianId()));
+    }
 
-
+    @Override
+    public void changePermission(ChangeFriendPermissionVo changeFriendPermissionVo) {
+        FriendsEntity friendsEntity = new FriendsEntity();
+        friendsEntity.setPermission(changeFriendPermissionVo.getPermission());
+        friendsDao.update(friendsEntity,new UpdateWrapper<FriendsEntity>()
+                .eq("self_xiuxian_id",changeFriendPermissionVo.getSelfXiuxianId())
+                .eq("friend_xiuxian_id",changeFriendPermissionVo.getFriendXiuxianId()));
+    }
 
 
     /**

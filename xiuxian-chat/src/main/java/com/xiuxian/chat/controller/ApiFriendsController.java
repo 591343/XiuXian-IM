@@ -6,6 +6,8 @@ import com.xiuxian.chat.service.impl.ChatListServiceImpl;
 import com.xiuxian.chat.vo.chatlist.FriendListItemRelVo;
 import com.xiuxian.chat.vo.friend.AcceptFriendVo;
 import com.xiuxian.chat.vo.friend.AddFriendVo;
+import com.xiuxian.chat.vo.friend.ChangeFriendPermissionVo;
+import com.xiuxian.chat.vo.friend.ChangeFriendRemarkVo;
 import com.xiuxian.chat.vo.friendlist.GroupListVo;
 import com.xiuxian.chat.vo.message.NoticeMessage;
 import com.xiuxian.chat.vo.message.NoticeMessageVo;
@@ -61,5 +63,23 @@ public class ApiFriendsController {
         friendsService.deleteFriend(friendListItemRelVo);
         return new Result();
     }
+
+    @Login
+    @PostMapping("/xiuxianfriend/changeremark")
+    @ApiOperation(value = "修改好友的备注")
+    public Result changeFriendsRemark(@RequestBody ChangeFriendRemarkVo changeFriendRemarkVo){
+        friendsService.changeRemark(changeFriendRemarkVo);
+        return new Result();
+    }
+
+    @Login
+    @PostMapping("/xiuxianfriend/changepermission")
+    @ApiOperation(value = "修改好友的权限")
+    public Result changeFriendsPermission(@RequestBody ChangeFriendPermissionVo changeFriendPermissionVo){
+        friendsService.changePermission(changeFriendPermissionVo);
+        return new Result();
+    }
+
+
 
 }

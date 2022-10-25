@@ -4,6 +4,8 @@ import com.xiuxian.chat.entity.FriendsEntity;
 import com.xiuxian.chat.vo.chatlist.FriendListItemRelVo;
 import com.xiuxian.chat.vo.friend.AcceptFriendVo;
 import com.xiuxian.chat.vo.friend.AddFriendVo;
+import com.xiuxian.chat.vo.friend.ChangeFriendPermissionVo;
+import com.xiuxian.chat.vo.friend.ChangeFriendRemarkVo;
 import com.xiuxian.chat.vo.message.NoticeMessage;
 import com.xiuxian.chat.vo.message.NoticeMessageVo;
 
@@ -22,4 +24,8 @@ public interface FriendsService {
     void acceptFriend(AcceptFriendVo acceptFriendVo);
 
     void deleteFriend(FriendListItemRelVo friendListItemRelVo);
+
+    void changeRemark(ChangeFriendRemarkVo changeFriendRemarkVo);
+
+    void changePermission(ChangeFriendPermissionVo changeFriendPermissionVo);
 }

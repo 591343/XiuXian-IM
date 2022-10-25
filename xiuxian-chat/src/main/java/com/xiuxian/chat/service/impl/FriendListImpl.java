@@ -89,5 +89,4 @@ public class FriendListImpl implements FriendListService {
         return null;
     }
 
-
 }
