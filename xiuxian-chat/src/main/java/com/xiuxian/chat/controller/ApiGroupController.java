@@ -1,6 +1,8 @@
 package com.xiuxian.chat.controller;
 
 import com.xiuxian.chat.annotation.Login;
+import com.xiuxian.chat.vo.friend.ChangeFriendRemarkVo;
+import com.xiuxian.chat.vo.group.ChangGroupNameVo;
 import com.xiuxian.common.utils.Result;
 import com.xiuxian.chat.entity.GroupEntity;
 import com.xiuxian.chat.service.XiuXianGroupService;
@@ -9,10 +11,7 @@ import com.xiuxian.chat.vo.group.GroupInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 群接口
@@ -50,4 +49,30 @@ public class ApiGroupController {
         GroupInfoVo groupInfoVo = xiuXianGroupService.getGroupInfo(xiuxianGroupId);
         return new Result<GroupInfoVo>().ok(groupInfoVo);
     }
+
+
+    @Login
+    @GetMapping("/xiuxiangroup/groupnumber")
+    @ApiOperation(value="获取群人数", response= Integer.class)
+    public Result<Integer> groupPersonNumber(@RequestParam("xiuxianGroupId") String xiuxianGroupId){
+        Integer number = xiuXianGroupService.getGroupNumber(xiuxianGroupId);
+        return new Result<Integer>().ok(number);
+    }
+
+    @Login
+    @PostMapping("/xiuxiangroup/changegroupname")
+    @ApiOperation(value="修改群名")
+    public Result changGroupName(@RequestBody ChangGroupNameVo changGroupNameVo){
+        xiuXianGroupService.changGroupName(changGroupNameVo);
+        return new Result();
+    }
+
+    @Login
+    @PostMapping("/xiuxiangroup/changegroupremark")
+    @ApiOperation(value="修改群备注")
+    public Result changGroupRemark(@RequestBody ChangeFriendRemarkVo changeFriendRemarkVo){
+        xiuXianGroupService.changGroupRemark(changeFriendRemarkVo);
+        return new Result();
+    }
+
 }

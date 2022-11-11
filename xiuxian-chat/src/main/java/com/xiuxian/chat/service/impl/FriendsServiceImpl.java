@@ -286,6 +286,16 @@ public class FriendsServiceImpl implements FriendsService {
                 .eq("friend_xiuxian_id",changeFriendPermissionVo.getFriendXiuxianId()));
     }
 
+    @Override
+    public String getFriendRemark(String selfXiuxianId, String friendXiuxianId) {
+        FriendsEntity friendsEntity = friendsDao.selectOne(new QueryWrapper<FriendsEntity>().select("remark").eq("self_xiuxian_id", selfXiuxianId)
+                .eq("friend_xiuxian_id", friendXiuxianId));
+        if(friendsEntity!=null){
+            return friendsEntity.getRemark();
+        }
+        return null;
+    }
+
 
     /**
      * 获取名称的大写首字母

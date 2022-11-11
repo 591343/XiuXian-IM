@@ -1,6 +1,8 @@
 package com.xiuxian.chat.service;
 
 import com.xiuxian.chat.entity.GroupEntity;
+import com.xiuxian.chat.vo.friend.ChangeFriendRemarkVo;
+import com.xiuxian.chat.vo.group.ChangGroupNameVo;
 import com.xiuxian.chat.vo.group.GroupContactsVo;
 import com.xiuxian.chat.vo.group.GroupInfoVo;
 
@@ -18,4 +20,9 @@ public interface XiuXianGroupService {
     GroupInfoVo getGroupInfo(String xiuxianGroupId);
 
 
+    Integer getGroupNumber(String xiuxianGroupId);
+
+    void changGroupName(ChangGroupNameVo changGroupNameVo);
+
+    void changGroupRemark(ChangeFriendRemarkVo changeFriendRemarkVo);
 }

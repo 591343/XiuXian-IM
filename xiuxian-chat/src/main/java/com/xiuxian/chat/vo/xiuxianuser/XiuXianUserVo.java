@@ -14,6 +14,8 @@ import lombok.Data;
 @ApiModel(value = "修仙用户Vo")
 
 public class XiuXianUserVo {
+    @ApiModelProperty(value = "修仙用户id")
+    private String xiuxianUserId;
     @ApiModelProperty(value = "修仙用户头像")
     private String profile;
     @ApiModelProperty(value = "修仙用户昵称")

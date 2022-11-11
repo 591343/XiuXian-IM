@@ -28,4 +28,5 @@ public interface FriendsService {
     void changeRemark(ChangeFriendRemarkVo changeFriendRemarkVo);
 
     void changePermission(ChangeFriendPermissionVo changeFriendPermissionVo);
+    String getFriendRemark(String selfXiuxianId,String friendXiuxianId);
 }

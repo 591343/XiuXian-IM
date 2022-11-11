@@ -62,7 +62,7 @@ public class WSController {
 
     //群聊 订阅/topic/info/{xiuxianGroupId}
     @PostMapping("/sendMsgToGroup")
-    public Result sendMsgByAll(@RequestBody ChatMessage chatMessage) {
+    public Result sendMsgToGroup(@RequestBody ChatMessage chatMessage) {
         // /topic/info/{xiuxianGroupId}
         ChatMessageEntity chatMessageEntity = new ChatMessageEntity();
         BeanUtils.copyProperties(chatMessage, chatMessageEntity);
@@ -77,6 +77,12 @@ public class WSController {
     @PostMapping("/sendNoticeMessageToUser")
     public Result sendNoticeMessageToUser(@RequestBody NoticeMessage noticeMessage) {
         simpMessagingTemplate.convertAndSendToUser(noticeMessage.getToId(),"/notice",noticeMessage);
+        return new Result<>();
+    }
+    //群发 订阅/topic/notice/{xiuxianGroupId}
+    @PostMapping("/sendNoticeMessageToGroup")
+    public Result sendNoticeMessageToGroup(@RequestBody NoticeMessage noticeMessage) {
+        simpMessagingTemplate.convertAndSend("/topic/notice/" + noticeMessage.getToId(), noticeMessage);
         return new Result<>();
     }
 

@@ -9,9 +9,10 @@ import lombok.Data;
  * @Author: Chen Xiao
  * @Description: 修改好友备注Vo
  * @Date: Created in 2022/10/13
- @ApiModel(value = "修改好友备注Vo")
+
  */
 @Data
+@ApiModel(value = "修改好友备注Vo")
 public class ChangeFriendRemarkVo {
     @ApiModelProperty(value = "朋友列表项自身id")
     private String selfXiuxianId;

@@ -1,6 +1,7 @@
 package com.xiuxian.chat.vo.friend;
 
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -8,9 +9,10 @@ import lombok.Data;
  * @Author: Chen Xiao
  * @Description: 修改好友权限Vo
  * @Date: Created in 2022/10/20
- @ApiModel(value = "修改好友权限Vo")
+
  */
 @Data
+@ApiModel(value = "修改好友权限Vo")
 public class ChangeFriendPermissionVo {
     @ApiModelProperty(value = "朋友列表项自身id")
     private String selfXiuxianId;

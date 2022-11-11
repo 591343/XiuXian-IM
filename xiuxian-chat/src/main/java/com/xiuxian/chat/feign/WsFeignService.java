@@ -16,6 +16,9 @@ public interface WsFeignService {
 
 
     //单聊 订阅/user/{xiuxianUserId}/chat
-    @PostMapping("/api/ws//sendMsgToUser")
+    @PostMapping("/api/ws/sendMsgToUser")
     Result sendMsgByUser(@RequestBody ChatMessage chatMessage);
+
+    @PostMapping("/api/ws/sendNoticeMessageToGroup")
+    Result sendNoticeMessageToGroup(@RequestBody NoticeMessage noticeMessage);
 }

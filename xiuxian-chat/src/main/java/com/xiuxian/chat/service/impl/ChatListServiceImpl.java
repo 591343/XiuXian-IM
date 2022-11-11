@@ -39,6 +39,11 @@ public class ChatListServiceImpl implements ChatListService {
     @Autowired
     XiuXianGroupService xiuXianGroupService;
 
+    @Autowired
+    FriendsService friendsService;
+
+
+
     @Override
     public ChatListVo getLatestChatList(String selfXiuxianId,String toId,Boolean single) {
         List<ChatListEntity> chatLists;
@@ -57,11 +62,15 @@ public class ChatListServiceImpl implements ChatListService {
             ChatListItemVo chatListItemVo = new ChatListItemVo();
             String friendXiuxianId = item.getFriendXiuxianId();
             Integer chatType = item.getType();
-            List<ChatMessagePO> chatMessagePOList=new ArrayList<>();
+            List<ChatMessagePO> chatMessagePOList;
+            chatListItemVo.setNumber(0);
             if(chatType==Constant.FRIEND_TYPE){
                 chatMessagePOList = chatMessageService.getChatMessagesByFrom(selfXiuxianId, friendXiuxianId, Constant.LIMIT);
             }else{
                 chatMessagePOList = chatMessageService.getChatMessagesByxiuxianGroupId(selfXiuxianId,friendXiuxianId,Constant.LIMIT);
+                //查询群成员人数
+                Integer groupNumber = xiuXianGroupService.getGroupNumber(friendXiuxianId);
+                chatListItemVo.setNumber(groupNumber);
             }
             List<ChatMessageItemVo> messages = chatMessagePOList.stream().map(chatMessagePO -> {
                 String fromId = chatMessagePO.getFromId();
@@ -73,7 +82,9 @@ public class ChatListServiceImpl implements ChatListService {
                 if(chatType==Constant.GROUP_TYPE){
                     if(!chatUserMap.containsKey(fromId)){
                         XiuXianUserEntity xiuXianUser = xiuXianUserService.getXiuXianUser(fromId);
+                        String remark = friendsService.getFriendRemark(selfXiuxianId, fromId);
                         BeanUtils.copyProperties(xiuXianUser,chatUser);
+                        chatUser.setRemark(remark);
                         chatUserMap.put(fromId,chatUser);
                     }else {
                         chatUser = chatUserMap.get(fromId);

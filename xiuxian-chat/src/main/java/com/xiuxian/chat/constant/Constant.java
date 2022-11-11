@@ -54,4 +54,16 @@ public interface Constant {
      */
     int IMAGE_CHAT_MESSAGE_TYPE=1;
 
+
+    /**
+     * 公群公告消息
+     */
+
+    int GROUP_ANNOUNCEMENT_MESSAGE_TYPE=2;
+
+    /**
+     * 个人名片推送消息
+     */
+    int PERSONAL_DELIVERY_MESSAGE_TYPE=3;
+
 }

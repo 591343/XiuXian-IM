@@ -28,6 +28,11 @@ public interface NoticeMessageConstant {
     int ADD_FRIEND_SUCCESS_NOTICE=4;
 
     /**
+     * 群公告发送通知
+     */
+    int GROUP_ANNOUNCEMENT_NOTICE=5;
+
+    /**
      * 消息发送成功状态
      */
     int SUCCESS_SEND_STATUS=0;

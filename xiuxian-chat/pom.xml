@@ -15,6 +15,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<pinyin4j.version>2.5.1</pinyin4j.version>
+		<maven.version>2.3.12.RELEASE</maven.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -35,6 +36,24 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
+		<!--redis-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>io.lettuce</groupId>
+					<artifactId>lettuce-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!--jedis-->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -42,6 +61,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${maven.version}</version>
 				<configuration>
 					<fork>true</fork><!-- 如果没有该配置，热部署的devtools不生效 -->
 				</configuration>

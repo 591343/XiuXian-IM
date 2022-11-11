@@ -31,6 +31,9 @@ public class ChatListItemVo {
     @ApiModelProperty(value = "朋友类型")
     private Integer type;
 
+    @ApiModelProperty(value = "群成员人数")
+    private Integer number;
+
     @ApiModelProperty(value = "聊天消息列表")
     private List<ChatMessageItemVo> messages;
 
