@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Mapper
 public interface ChatMessageDao extends BaseDao<ChatMessageEntity> {
-    List<ChatMessagePO> getChatMessagesByFromId(String fromId, String toId, Integer limit);
+    List<ChatMessagePO> getChatMessagesByFromId(String fromId, String toId, Integer limit,Long startTime);
 
-    List<ChatMessagePO> getChatMessagesByxiuxianGroupId(String fromId, String xiuxianGroupId, Integer limit);
+    List<ChatMessagePO> getChatMessagesByxiuxianGroupId(String fromId, String xiuxianGroupId, Integer limit,Long startTime);
 }

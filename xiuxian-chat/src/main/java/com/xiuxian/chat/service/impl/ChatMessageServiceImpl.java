@@ -21,8 +21,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     ChatMessageDao chatMessageDao;
 
     @Override
-    public List<ChatMessagePO> getChatMessagesByFrom(String fromId, String toId, Integer limit) {
-        return chatMessageDao.getChatMessagesByFromId(fromId,toId,limit);
+    public List<ChatMessagePO> getChatMessagesByFrom(String fromId, String toId, Integer limit,Long startTime) {
+        return chatMessageDao.getChatMessagesByFromId(fromId,toId,limit,startTime);
     }
 
     @Override
@@ -39,8 +39,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     }
 
     @Override
-    public List<ChatMessagePO> getChatMessagesByxiuxianGroupId(String selfXiuxianId, String xiuxianGroupId, Integer limit) {
-        return  chatMessageDao.getChatMessagesByxiuxianGroupId(selfXiuxianId,xiuxianGroupId,limit);
+    public List<ChatMessagePO> getChatMessagesByxiuxianGroupId(String selfXiuxianId, String xiuxianGroupId, Integer limit,Long startTime) {
+        return  chatMessageDao.getChatMessagesByxiuxianGroupId(selfXiuxianId,xiuxianGroupId,limit,startTime);
     }
 
     @Override

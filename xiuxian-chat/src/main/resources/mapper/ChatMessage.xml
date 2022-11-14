@@ -23,6 +23,7 @@
                     from tb_chat_message tcm
                     where tcm.from_id = #{toId}
                           and tcm.to_id = #{fromId}) tb
+              where tb.date >= #{startTime}
               order by date desc limit #{limit}) sort_tb
         order by date;
     </select>
@@ -37,6 +38,7 @@
             tcm.from_time 'date',tcm.chat_message_type
             from tb_chat_message tcm
             where tcm.to_id =#{xiuxianGroupId}) tb
+            where tb.date >= #{startTime}
             order by date desc limit #{limit}) sort_tb
         order by date;
     </select>

@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +41,8 @@ public class ChatListServiceImpl implements ChatListService {
 
 
 
+
+
     @Override
     public ChatListVo getLatestChatList(String selfXiuxianId,String toId,Boolean single) {
         List<ChatListEntity> chatLists;
@@ -64,10 +63,12 @@ public class ChatListServiceImpl implements ChatListService {
             Integer chatType = item.getType();
             List<ChatMessagePO> chatMessagePOList;
             chatListItemVo.setNumber(0);
+            FriendsEntity friend = friendsService.getFriend(selfXiuxianId, friendXiuxianId);
+            Long startTime=friend.getStartTime();
             if(chatType==Constant.FRIEND_TYPE){
-                chatMessagePOList = chatMessageService.getChatMessagesByFrom(selfXiuxianId, friendXiuxianId, Constant.LIMIT);
+                chatMessagePOList = chatMessageService.getChatMessagesByFrom(selfXiuxianId, friendXiuxianId, Constant.LIMIT,startTime);
             }else{
-                chatMessagePOList = chatMessageService.getChatMessagesByxiuxianGroupId(selfXiuxianId,friendXiuxianId,Constant.LIMIT);
+                chatMessagePOList = chatMessageService.getChatMessagesByxiuxianGroupId(selfXiuxianId,friendXiuxianId,Constant.LIMIT,startTime);
                 //查询群成员人数
                 Integer groupNumber = xiuXianGroupService.getGroupNumber(friendXiuxianId);
                 chatListItemVo.setNumber(groupNumber);
@@ -142,8 +143,21 @@ public class ChatListServiceImpl implements ChatListService {
                 .eq("self_xiuxian_id", chatListItemRelVo.getSelfXiuxianId())
                 .eq("friend_xiuxian_id", chatListItemRelVo.getFriendXiuxianId()));
 
-        //删除聊天消息(单方面)
-        chatMessageService.deleteChatMessageByChatListItemRel(chatListItemRelVo);
+
+        if(friendsService.isFriends(chatListItemRelVo.getSelfXiuxianId(),chatListItemRelVo.getFriendXiuxianId())){
+            //设置起始时间(单方面)
+            friendsService.setStartTime(chatListItemRelVo.getSelfXiuxianId(),chatListItemRelVo.getFriendXiuxianId(),new Date().getTime());
+        }else { //如果双方都不是朋友，删除所有聊天记录
+            if(!friendsService.isFriends(chatListItemRelVo.getFriendXiuxianId(),chatListItemRelVo.getSelfXiuxianId())){
+                //删除自己相关的聊天记录
+                chatMessageService.deleteChatMessageByChatListItemRel(chatListItemRelVo);
+                ChatListItemRelVo chatListItemRelVo1 = new ChatListItemRelVo();
+                chatListItemRelVo1.setSelfXiuxianId(chatListItemRelVo.getFriendXiuxianId());
+                chatListItemRelVo1.setFriendXiuxianId(chatListItemRelVo.getSelfXiuxianId());
+                //删除对方相关的聊天记录
+                chatMessageService.deleteChatMessageByChatListItemRel(chatListItemRelVo1);
+            }
+        }
     }
 
     /**

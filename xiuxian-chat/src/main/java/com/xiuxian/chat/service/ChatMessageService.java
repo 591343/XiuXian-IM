@@ -16,13 +16,13 @@ import java.util.List;
  */
 public interface ChatMessageService {
 
-    List<ChatMessagePO> getChatMessagesByFrom(String fromId, String toId, Integer limit);
+    List<ChatMessagePO> getChatMessagesByFrom(String fromId, String toId, Integer limit,Long startTime);
 
     void saveChatMessage(ChatMessageEntity chatMessageEntity);
 
     void updateChatMessageToTime(ChatMessageUpdateTotimeVo chatMessageUpdateTotimeVo);
 
-    List<ChatMessagePO> getChatMessagesByxiuxianGroupId(String selfXiuxianId, String xiuxianGroupId, Integer limit);
+    List<ChatMessagePO> getChatMessagesByxiuxianGroupId(String selfXiuxianId, String xiuxianGroupId, Integer limit,Long startTime);
 
     void deleteChatMessageByChatListItemRel(ChatListItemRelVo chatListItemRelVo);
 }

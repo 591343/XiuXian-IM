@@ -29,4 +29,7 @@ public interface FriendsService {
 
     void changePermission(ChangeFriendPermissionVo changeFriendPermissionVo);
     String getFriendRemark(String selfXiuxianId,String friendXiuxianId);
+
+    FriendsEntity getFriend(String selfXiuxianId,String friendXiuxianId);
+    void setStartTime(String selfXiuxianId,String friendXiuxianId,Long startTime);
 }

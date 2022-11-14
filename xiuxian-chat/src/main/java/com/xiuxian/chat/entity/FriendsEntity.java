@@ -51,4 +51,9 @@ public class FriendsEntity {
      * 朋友权限 朋友的权限,0:聊天、朋友圈、修仙运动 1:仅聊天
      */
     private Integer permission;
+
+    /**
+     * 用户聊天记录的起始时间，为NULL代表没有删除过聊天
+     */
+    private Long startTime;
 }

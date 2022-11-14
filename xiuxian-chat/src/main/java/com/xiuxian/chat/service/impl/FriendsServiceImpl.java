@@ -75,6 +75,8 @@ public class FriendsServiceImpl implements FriendsService {
 
         friendsEntity.setRemark(addFriendVo.getRemark());
         friendsEntity.setPermission(addFriendVo.getPermission());
+        friendsEntity.setStartTime(new Date().getTime());
+
         if(!StringUtils.isEmpty(friendsEntity.getRemark())){
             friendsEntity.setInitial(getInitial(friendsEntity.getRemark()));
         }else {
@@ -82,10 +84,9 @@ public class FriendsServiceImpl implements FriendsService {
             friendsEntity.setInitial(getInitial(xiuXianUserEntity.getNickname()));
         }
 
-
-
         //如果对方没有删除你，则直接加为好友
         if(isFriends(addFriendVo.getNoticeMessageVo().getToId(),addFriendVo.getNoticeMessageVo().getFromId())){
+            friendsEntity.setStartTime(new Date().getTime());
             friendsEntity.setType(Constant.FRIEND_TYPE);
             friendsDao.insert(friendsEntity);
             NoticeMessageVo noticeMessageVo = addFriendVo.getNoticeMessageVo();
@@ -198,9 +199,12 @@ public class FriendsServiceImpl implements FriendsService {
         if(!isFriends(noticeMessageVo.getFromId(),noticeMessageVo.getToId())){
             //增加fromId->toId的friends
             friendsEntity=new FriendsEntity();
+            FriendsEntity myFriend = friendsDao.selectOne(new QueryWrapper<FriendsEntity>().select("start_time").eq("self_xiuxian_id", noticeMessageVo.getToId())
+                    .eq("friend_xiuxian_id", noticeMessageVo.getFromId()));
             friendsEntity.setSelfXiuxianId(noticeMessageVo.getFromId());
             friendsEntity.setFriendXiuxianId(noticeMessageVo.getToId());
             friendsEntity.setRemark(acceptFriendVo.getRemark());
+            friendsEntity.setStartTime(myFriend.getStartTime());
             XiuXianUserEntity xiuXianUserEntity = xiuXianUserDao.getByXiuXianUserId(noticeMessageVo.getToId());
             if(!StringUtils.isEmpty(acceptFriendVo.getRemark())){
                 friendsEntity.setInitial(getInitial(acceptFriendVo.getRemark()));
@@ -256,6 +260,7 @@ public class FriendsServiceImpl implements FriendsService {
     @Transactional
     @Override
     public void deleteFriend(FriendListItemRelVo friendListItemRelVo) {
+
         friendsDao.delete(new QueryWrapper<FriendsEntity>()
                 .eq("self_xiuxian_id",friendListItemRelVo.getSelfXiuxianId())
                 .eq("friend_xiuxian_id",friendListItemRelVo.getFriendXiuxianId()));
@@ -294,6 +299,20 @@ public class FriendsServiceImpl implements FriendsService {
             return friendsEntity.getRemark();
         }
         return null;
+    }
+
+    @Override
+    public FriendsEntity getFriend(String selfXiuxianId, String friendXiuxianId) {
+        return friendsDao.selectOne(new QueryWrapper<FriendsEntity>().eq("self_xiuxian_id", selfXiuxianId)
+                .eq("friend_xiuxian_id", friendXiuxianId));
+    }
+
+    @Override
+    public void setStartTime(String selfXiuxianId, String friendXiuxianId, Long startTime) {
+        FriendsEntity friendsEntity = new FriendsEntity();
+        friendsEntity.setStartTime(startTime);
+        friendsDao.update(friendsEntity,new UpdateWrapper<FriendsEntity>().eq("self_xiuxian_id", selfXiuxianId)
+                .eq("friend_xiuxian_id", friendXiuxianId));
     }
 
 
