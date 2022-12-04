@@ -33,6 +33,26 @@ public interface NoticeMessageConstant {
     int GROUP_ANNOUNCEMENT_NOTICE=5;
 
     /**
+     * 邀请加入群聊通知
+     */
+    int INVITE_JOIN_GROUP_NOTICE=6;
+
+    /**
+     * 有人加入群聊通知
+     */
+    int SOMEONE_JOIN_GROUP_NOTICE=7;
+
+    /**
+     * 移出群成员通知
+     */
+    int REMOVE_FROM_GROUP_NOTICE=8;
+
+    /**
+     * 有人被移除群聊
+     */
+    int SOMEONE_REMOVE_GROUP_NOTICE=9;
+
+    /**
      * 消息发送成功状态
      */
     int SUCCESS_SEND_STATUS=0;

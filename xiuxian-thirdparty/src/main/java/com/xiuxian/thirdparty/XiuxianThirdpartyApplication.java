@@ -23,6 +23,5 @@ public class XiuxianThirdpartyApplication extends SpringBootServletInitializer {
         StringBuilder b=new StringBuilder();
         b.deleteCharAt(b.length()-1);
         return application.sources(XiuxianThirdpartyApplication.class);
-
     }
 }

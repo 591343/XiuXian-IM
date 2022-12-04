@@ -89,4 +89,20 @@ public class FriendListImpl implements FriendListService {
         return null;
     }
 
+    @Override
+    public GroupListItemVo getGroupListItem(String selfXiuxianId, String friendXiuxianId) {
+        FriendsEntity item = friendsDao.getFriendRelByselfXiuxianIdAndFriendXiuxianId(selfXiuxianId, friendXiuxianId);
+        if(item!=null){
+            GroupListItemVo groupListItemVo = new GroupListItemVo();
+            GroupEntity groupEntity = xiuXianGroupService.getXiuXianGroup(friendXiuxianId);
+
+            Integer number = friendsDao.getXiuxianUserNumberByXiuxianGroupId(friendXiuxianId);
+            groupListItemVo.setNumber(number);
+            BeanUtils.copyProperties(groupEntity, groupListItemVo);
+            BeanUtils.copyProperties(item, groupListItemVo);
+            return groupListItemVo;
+        }
+        return null;
+    }
+
 }

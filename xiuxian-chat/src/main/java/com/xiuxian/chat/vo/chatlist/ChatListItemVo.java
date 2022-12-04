@@ -34,6 +34,8 @@ public class ChatListItemVo {
     @ApiModelProperty(value = "群成员人数")
     private Integer number;
 
+    @ApiModelProperty(value = "建立聊天时的时间戳")
+    private Long startTime;
     @ApiModelProperty(value = "聊天消息列表")
     private List<ChatMessageItemVo> messages;
 

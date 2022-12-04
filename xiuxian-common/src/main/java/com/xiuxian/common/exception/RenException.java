@@ -26,7 +26,6 @@ public class RenException extends RuntimeException {
 	public RenException(int code) {
 		this.code = code;
 		this.msg = MessageUtils.getMessage(code);
-
 	}
 
 	public RenException(int code, String... params) {

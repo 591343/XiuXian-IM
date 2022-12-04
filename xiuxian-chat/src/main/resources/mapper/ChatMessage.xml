@@ -4,41 +4,49 @@
 <mapper namespace="com.xiuxian.chat.dao.ChatMessageDao">
 
     <select id="getChatMessagesByFromId" resultType="com.xiuxian.chat.po.ChatMessagePO">
-        select from_id,to_id,content,remote_media_url,date,chat_message_type, if(from_id=#{fromId},true,false) 'self'
-        from (select *
-              from (select tcm.from_id,
-                           tcm.to_id,
-                           tcm.content,
-                           tcm.remote_media_url,
-                           tcm.from_time 'date',tcm.chat_message_type
-                    from tb_chat_message tcm
-                    where tcm.from_id = #{fromId}
-                      and tcm.to_id = #{toId}
-                    union all
-                    select tcm.from_id,
-                           tcm.to_id,
-                           tcm.content,
-                           tcm.remote_media_url,
-                           tcm.from_time 'date',tcm.chat_message_type
-                    from tb_chat_message tcm
-                    where tcm.from_id = #{toId}
-                          and tcm.to_id = #{fromId}) tb
-              where tb.date >= #{startTime}
-              order by date desc limit #{limit}) sort_tb
-        order by date;
-    </select>
-
-    <select id="getChatMessagesByxiuxianGroupId" resultType="com.xiuxian.chat.po.ChatMessagePO">
-        select from_id,to_id,content,remote_media_url,date,chat_message_type, if(from_id=#{fromId},true,false) 'self'
+        select from_id,
+               to_id,
+               content,
+               remote_media_url, date, chat_message_type, if(from_id=
+               #{fromId}, true, false) 'self'
         from (select *
             from (select tcm.from_id,
             tcm.to_id,
             tcm.content,
             tcm.remote_media_url,
-            tcm.from_time 'date',tcm.chat_message_type
+            tcm.from_time 'date', tcm.chat_message_type
             from tb_chat_message tcm
-            where tcm.to_id =#{xiuxianGroupId}) tb
-            where tb.date >= #{startTime}
+            where tcm.from_id = #{fromId}
+            and tcm.to_id = #{toId}
+            and tcm.from_time >= #{startTime}
+            union all
+            select tcm.from_id,
+            tcm.to_id,
+            tcm.content,
+            tcm.remote_media_url,
+            tcm.from_time 'date', tcm.chat_message_type
+            from tb_chat_message tcm
+            where tcm.from_id = #{toId}
+            and tcm.to_id = #{fromId}
+            and tcm.from_time >= #{startTime}) tb
+            order by date desc limit #{limit}) sort_tb
+        order by date;
+    </select>
+
+    <select id="getChatMessagesByxiuxianGroupId" resultType="com.xiuxian.chat.po.ChatMessagePO">
+        select from_id,
+               to_id,
+               content,
+               remote_media_url, date, chat_message_type, if(from_id=
+               #{fromId}, true, false) 'self'
+        from (select tcm.from_id,
+            tcm.to_id,
+            tcm.content,
+            tcm.remote_media_url,
+            tcm.from_time 'date', tcm.chat_message_type
+            from tb_chat_message tcm
+            where tcm.to_id = #{xiuxianGroupId}
+            and tcm.from_time >= #{startTime}
             order by date desc limit #{limit}) sort_tb
         order by date;
     </select>

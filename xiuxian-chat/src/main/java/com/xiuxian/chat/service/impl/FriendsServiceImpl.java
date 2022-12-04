@@ -70,12 +70,13 @@ public class FriendsServiceImpl implements FriendsService {
 
         //1. 添加好友
         FriendsEntity friendsEntity = new FriendsEntity();
+        long startTime = new Date().getTime();
         friendsEntity.setSelfXiuxianId(addFriendVo.getNoticeMessageVo().getFromId());
         friendsEntity.setFriendXiuxianId(addFriendVo.getNoticeMessageVo().getToId());
 
         friendsEntity.setRemark(addFriendVo.getRemark());
         friendsEntity.setPermission(addFriendVo.getPermission());
-        friendsEntity.setStartTime(new Date().getTime());
+        friendsEntity.setStartTime(startTime);
 
         if(!StringUtils.isEmpty(friendsEntity.getRemark())){
             friendsEntity.setInitial(getInitial(friendsEntity.getRemark()));
@@ -86,7 +87,7 @@ public class FriendsServiceImpl implements FriendsService {
 
         //如果对方没有删除你，则直接加为好友
         if(isFriends(addFriendVo.getNoticeMessageVo().getToId(),addFriendVo.getNoticeMessageVo().getFromId())){
-            friendsEntity.setStartTime(new Date().getTime());
+            friendsEntity.setStartTime(startTime);
             friendsEntity.setType(Constant.FRIEND_TYPE);
             friendsDao.insert(friendsEntity);
             NoticeMessageVo noticeMessageVo = addFriendVo.getNoticeMessageVo();
@@ -103,22 +104,18 @@ public class FriendsServiceImpl implements FriendsService {
             chatListEntity.setSelfXiuxianId(noticeMessageVo.getFromId());
             chatListEntity.setFriendXiuxianId(noticeMessageVo.getToId());
             chatListEntity.setType(Constant.FRIEND_TYPE);
+            chatListEntity.setStartTime(startTime);
             chatListService.addChatList(chatListEntity);
 
             //给对方发送打招呼消息
-            ChatMessageEntity chatMessageEntity = new ChatMessageEntity();
-            chatMessageEntity.setFromId(noticeMessageVo.getFromId());
-            chatMessageEntity.setToId(noticeMessageVo.getToId());
-            // 打招呼语句
-            chatMessageEntity.setContent(noticeMessageVo.getContent());
-            chatMessageEntity.setFromTime(new Date().getTime());
-            chatMessageEntity.setChatMessageType(Constant.TEXT_CHAT_MESSAGE_TYPE);
-            chatMessageService.saveChatMessage(chatMessageEntity);
-
-
             ChatMessage chatMessage = new ChatMessage();
-            chatMessage.setId(String.valueOf(chatMessageEntity.getId()));
-            BeanUtils.copyProperties(chatMessageEntity,chatMessage);
+
+            chatMessage.setFromId(noticeMessageVo.getFromId());
+            chatMessage.setToId(noticeMessageVo.getToId());
+            // 打招呼语句
+            chatMessage.setContent(noticeMessageVo.getContent());
+            chatMessage.setFromTime(startTime);
+            chatMessage.setChatMessageType(Constant.TEXT_CHAT_MESSAGE_TYPE);
             //给朋友发送打招呼消息
             wsFeignService.sendMsgByUser(chatMessage);
 
@@ -175,6 +172,7 @@ public class FriendsServiceImpl implements FriendsService {
     @Override
     public void acceptFriend(AcceptFriendVo acceptFriendVo) {
         //1.是否相互发送过验证消息
+        long startTime = new Date().getTime();
         NoticeMessageVo noticeMessageVo = acceptFriendVo.getNoticeMessageVo();
         if(noticeMessageService.isSendValidMessage(noticeMessageVo.getFromId(), noticeMessageVo.getToId())){
            noticeMessageService.updateNoticeMessageStatus(noticeMessageVo.getFromId(), noticeMessageVo.getToId()
@@ -224,7 +222,7 @@ public class FriendsServiceImpl implements FriendsService {
         noticeMessage.setToId(noticeMessageVo.getToId());
         noticeMessage.setNoticeMessageType(NoticeMessageConstant.ADD_FRIEND_SUCCESS_NOTICE);
         noticeMessage.setStatus(NoticeMessageConstant.SUCCESS_SEND_STATUS);
-        noticeMessage.setNoticeTime(new Date().getTime());
+        noticeMessage.setNoticeTime(startTime);
         noticeMessage.setContent("");
         NoticeMessageEntity noticeMessageEntity = new NoticeMessageEntity();
         BeanUtils.copyProperties(noticeMessage,noticeMessageEntity);
@@ -237,8 +235,8 @@ public class FriendsServiceImpl implements FriendsService {
         chatMessageEntity.setToId(noticeMessageVo.getToId());
         // 打招呼语句
         chatMessageEntity.setContent(noticeMessageVo.getContent());
-        chatMessageEntity.setFromTime(new Date().getTime());
-        chatMessageEntity.setToTime(new Date().getTime());
+        chatMessageEntity.setFromTime(startTime);
+        chatMessageEntity.setToTime(startTime);
         chatMessageEntity.setChatMessageType(Constant.TEXT_CHAT_MESSAGE_TYPE);
         chatMessageService.saveChatMessage(chatMessageEntity);
 
@@ -248,6 +246,7 @@ public class FriendsServiceImpl implements FriendsService {
         chatListEntity.setSelfXiuxianId(noticeMessageVo.getToId());
         chatListEntity.setFriendXiuxianId(noticeMessageVo.getFromId());
         chatListEntity.setType(Constant.FRIEND_TYPE);
+        chatListEntity.setStartTime(startTime);
         chatListService.addChatList(chatListEntity);
 
         wsFeignService.sendNoticeMessageToUser(noticeMessage);
@@ -259,7 +258,7 @@ public class FriendsServiceImpl implements FriendsService {
      */
     @Transactional
     @Override
-    public void deleteFriend(FriendListItemRelVo friendListItemRelVo) {
+    public void deleteFriend(FriendListItemRelVo friendListItemRelVo,Integer friendType) {
 
         friendsDao.delete(new QueryWrapper<FriendsEntity>()
                 .eq("self_xiuxian_id",friendListItemRelVo.getSelfXiuxianId())
@@ -270,7 +269,9 @@ public class FriendsServiceImpl implements FriendsService {
         chatListItemRelVo.setFriendXiuxianId(friendListItemRelVo.getFriendXiuxianId());
         //删除和好友所有通知消息,后期如果遇到特定的通知消息不能删除，再进行讨论
         noticeMessageService.deleteNoticeMessage(friendListItemRelVo.getSelfXiuxianId(),friendListItemRelVo.getFriendXiuxianId());
-        chatListService.deleteChatListItem(chatListItemRelVo);
+        if(friendType==Constant.FRIEND_TYPE){
+            chatListService.deleteChatListItem(chatListItemRelVo);
+        }
     }
 
     @Override

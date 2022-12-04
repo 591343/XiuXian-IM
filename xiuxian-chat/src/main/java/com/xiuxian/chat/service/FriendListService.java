@@ -3,6 +3,7 @@ package com.xiuxian.chat.service;
 import com.xiuxian.chat.entity.FriendsEntity;
 import com.xiuxian.chat.vo.friendlist.FriendListItemVo;
 import com.xiuxian.chat.vo.friendlist.FriendListVo;
+import com.xiuxian.chat.vo.friendlist.GroupListItemVo;
 import com.xiuxian.chat.vo.friendlist.GroupListVo;
 
 /**
@@ -19,4 +20,5 @@ public interface FriendListService {
     FriendsEntity getFriendRelByselfXiuxianIdAndFriendXiuxianId(String selfXiuxianId,String friendXiuxianId);
 
     FriendListItemVo getFriendListItem(String selfXiuxianId,String friendXiuxianId);
+    GroupListItemVo getGroupListItem(String selfXiuxianId, String friendXiuxianId);
 }

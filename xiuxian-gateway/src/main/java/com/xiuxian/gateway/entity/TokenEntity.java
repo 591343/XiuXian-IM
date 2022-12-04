@@ -6,10 +6,9 @@
  * 版权所有，侵权必究！
  */
 
-package com.xiuxian.chat.entity;
+package com.xiuxian.gateway.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 import lombok.ToString;
 
@@ -22,12 +21,12 @@ import java.util.Date;
  * @author Mark sunlightcs@gmail.com
  */
 @Data
-@TableName("tb_token")
+
 @ToString
 public class TokenEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@TableId
+
 	private Long id;
 	/**
 	 * 用户ID

@@ -2,12 +2,11 @@ package com.xiuxian.chat.controller;
 
 import com.xiuxian.chat.annotation.Login;
 import com.xiuxian.chat.vo.friend.ChangeFriendRemarkVo;
-import com.xiuxian.chat.vo.group.ChangGroupNameVo;
+import com.xiuxian.chat.vo.group.*;
+import com.xiuxian.chat.vo.xiuxianuser.XiuXianUserVo;
 import com.xiuxian.common.utils.Result;
 import com.xiuxian.chat.entity.GroupEntity;
 import com.xiuxian.chat.service.XiuXianGroupService;
-import com.xiuxian.chat.vo.group.GroupContactsVo;
-import com.xiuxian.chat.vo.group.GroupInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +36,8 @@ public class ApiGroupController {
     @Login
     @GetMapping("/xiuxiangroup/contacts")
     @ApiOperation(value="获取群人员", response= GroupContactsVo.class)
-    public Result<GroupContactsVo> groupContacts(@RequestParam("xiuxianGroupId") String xiuxianGroupId){
-        GroupContactsVo groupContacts = xiuXianGroupService.getGroupContacts(xiuxianGroupId);
+    public Result<GroupContactsVo> groupContacts(@RequestParam("xiuxianUserId") String xiuxianUserId,@RequestParam("xiuxianGroupId") String xiuxianGroupId){
+        GroupContactsVo groupContacts = xiuXianGroupService.getGroupContacts(xiuxianUserId,xiuxianGroupId);
         return new Result<GroupContactsVo>().ok(groupContacts);
     }
 
@@ -73,6 +72,38 @@ public class ApiGroupController {
     public Result changGroupRemark(@RequestBody ChangeFriendRemarkVo changeFriendRemarkVo){
         xiuXianGroupService.changGroupRemark(changeFriendRemarkVo);
         return new Result();
+    }
+
+    @Login
+    @PostMapping("/xiuxiangroup/invite-join-group")
+    @ApiOperation(value="邀请加入群聊")
+    public Result inviteJoinGroup(@RequestBody InviteJoinGroupVo inviteJoinGroupVo){
+        xiuXianGroupService.inviteJoinGroup(inviteJoinGroupVo);
+        return new Result();
+    }
+    @Login
+    @PostMapping("/xiuxiangroup/remove-from-group")
+    @ApiOperation(value="邀请加入群聊")
+    public Result removeFromGroup(@RequestBody RemoveFromGroupVo removeFromGroupVo){
+        xiuXianGroupService.removeFromGroup(removeFromGroupVo);
+        return new Result();
+    }
+
+
+    @Login
+    @GetMapping("/xiuxiangroup/member-name")
+    @ApiOperation(value="获取群成员名字 ",response= String.class)
+    public Result<String> getMemberName(@RequestParam("fromId") String fromId,@RequestParam("toId") String toId){
+        String name=xiuXianGroupService.getMemberName(fromId,toId);
+        return new Result<String>().ok(name);
+    }
+
+    @Login
+    @GetMapping("/xiuxiangroup/new-member")
+    @ApiOperation(value="获取新成员信息 ",response= XiuXianUserVo.class)
+    public Result<XiuXianUserVo> getNewMember(@RequestParam("selfXiuxianId") String selfXiuxianId, @RequestParam("memberId") String memberId){
+        XiuXianUserVo xiuXianUserVo=xiuXianGroupService.getNewMember(selfXiuxianId,memberId);
+        return new Result<XiuXianUserVo>().ok(xiuXianUserVo);
     }
 
 }

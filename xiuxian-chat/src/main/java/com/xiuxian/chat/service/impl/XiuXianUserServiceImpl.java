@@ -44,5 +44,14 @@ public class XiuXianUserServiceImpl implements XiuXianUserService {
         return 0;
     }
 
+    @Override
+    public String getNickname(String xiuxianUserId) {
+        XiuXianUserEntity xiuXianUserEntity = xiuXianUserDao.selectOne(new QueryWrapper<XiuXianUserEntity>().select("nickname").eq("xiuxian_user_id", xiuxianUserId));
+        if(xiuXianUserEntity!=null){
+            return xiuXianUserEntity.getNickname();
+        }
+        return null;
+    }
+
 
 }

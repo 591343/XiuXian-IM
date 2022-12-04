@@ -1,6 +1,7 @@
 package com.xiuxian.chat.controller;
 
 import com.xiuxian.chat.annotation.Login;
+import com.xiuxian.chat.constant.Constant;
 import com.xiuxian.chat.service.FriendsService;
 import com.xiuxian.chat.service.impl.ChatListServiceImpl;
 import com.xiuxian.chat.vo.chatlist.FriendListItemRelVo;
@@ -48,6 +49,8 @@ public class ApiFriendsController {
         return new Result<Boolean>().ok(isFriends);
     }
 
+
+
     @Login
     @PostMapping("/xiuxianfriend/acceptfriend")
     @ApiOperation(value = "接受好友申请")
@@ -60,7 +63,7 @@ public class ApiFriendsController {
     @PostMapping("/xiuxianfriend/deletefriend")
     @ApiOperation(value = "删除好友")
     public Result deleteFriend(@RequestBody FriendListItemRelVo friendListItemRelVo){
-        friendsService.deleteFriend(friendListItemRelVo);
+        friendsService.deleteFriend(friendListItemRelVo, Constant.FRIEND_TYPE);
         return new Result();
     }
 

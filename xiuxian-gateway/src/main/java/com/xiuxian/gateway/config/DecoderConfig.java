@@ -1,51 +1,39 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
-
-package com.xiuxian.thirdparty.config;
-
+package com.xiuxian.gateway.config;
+ 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
 import com.xiuxian.common.utils.DateUtils;
+import feign.codec.Decoder;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
+import org.springframework.cloud.openfeign.support.SpringDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.ByteArrayHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.ResourceHttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
 /**
- * MVC配置
- *
- * @author Mark sunlightcs@gmail.com
+ * @Author Chen Xiao
+ * @Description 解决 HttpMessageConverters Bean未注册问题
+ * @Create Created in 2022/12/3
+
  */
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
-
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(new ByteArrayHttpMessageConverter());
-        converters.add(new StringHttpMessageConverter());
-        converters.add(new ResourceHttpMessageConverter());
-        converters.add(new AllEncompassingFormHttpMessageConverter());
-        converters.add(new StringHttpMessageConverter());
-        converters.add(jackson2HttpMessageConverter());
+public class DecoderConfig {
+ 
+    @Bean
+    public Decoder feignDecoder() {
+        return new ResponseEntityDecoder(new SpringDecoder(feignHttpMessageConverter()));
     }
-
     @Bean
     public MappingJackson2HttpMessageConverter jackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -65,4 +53,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         converter.setObjectMapper(mapper);
         return converter;
     }
+    
+    public ObjectFactory<HttpMessageConverters> feignHttpMessageConverter() {
+        final HttpMessageConverters httpMessageConverters = new HttpMessageConverters(jackson2HttpMessageConverter());
+        return () -> httpMessageConverters;
+    }
+
+
 }

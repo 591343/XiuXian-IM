@@ -3,6 +3,7 @@ package com.xiuxian.chat.controller;
 
 import com.xiuxian.chat.annotation.Login;
 import com.xiuxian.chat.vo.friendlist.FriendListItemVo;
+import com.xiuxian.chat.vo.friendlist.GroupListItemVo;
 import com.xiuxian.chat.vo.message.NoticeMessageVo;
 import com.xiuxian.common.utils.Result;
 import com.xiuxian.chat.service.FriendListService;
@@ -48,6 +49,14 @@ public class ApiFriendListController {
     public Result<FriendListItemVo> getFriendListItem(@RequestParam("selfXiuxianId") String selfXiuxianId,@RequestParam("friendXiuxianId") String friendXiuxianId){
         FriendListItemVo friendListItemVo = friendListService.getFriendListItem(selfXiuxianId,friendXiuxianId);
         return new Result<FriendListItemVo>().ok(friendListItemVo);
+    }
+
+    @Login
+    @GetMapping("/xiuxianfriendlist/group-list-item")
+    @ApiOperation(value="获取群组列表项信息", response= GroupListItemVo.class)
+    public Result<GroupListItemVo> getGroupListItem(@RequestParam("selfXiuxianId") String selfXiuxianId,@RequestParam("friendXiuxianId") String friendXiuxianId){
+        GroupListItemVo groupListItemVo = friendListService.getGroupListItem(selfXiuxianId,friendXiuxianId);
+        return new Result<GroupListItemVo>().ok(groupListItemVo);
     }
 
 

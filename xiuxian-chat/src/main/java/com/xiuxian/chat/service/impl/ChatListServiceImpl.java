@@ -2,6 +2,7 @@ package com.xiuxian.chat.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.xiuxian.chat.constant.Constant;
 import com.xiuxian.chat.dao.ChatListDao;
 import com.xiuxian.chat.entity.ChatListEntity;
@@ -63,8 +64,8 @@ public class ChatListServiceImpl implements ChatListService {
             Integer chatType = item.getType();
             List<ChatMessagePO> chatMessagePOList;
             chatListItemVo.setNumber(0);
-            FriendsEntity friend = friendsService.getFriend(selfXiuxianId, friendXiuxianId);
-            Long startTime=friend.getStartTime();
+            chatListItemVo.setType(item.getType());
+            Long startTime=item.getStartTime();
             if(chatType==Constant.FRIEND_TYPE){
                 chatMessagePOList = chatMessageService.getChatMessagesByFrom(selfXiuxianId, friendXiuxianId, Constant.LIMIT,startTime);
             }else{
@@ -75,12 +76,12 @@ public class ChatListServiceImpl implements ChatListService {
             }
             List<ChatMessageItemVo> messages = chatMessagePOList.stream().map(chatMessagePO -> {
                 String fromId = chatMessagePO.getFromId();
+                Integer chatMessageType = chatMessagePO.getChatMessageType();
                 ChatMessageItemVo chatMessageItemVo = new ChatMessageItemVo();
                 ChatUser chatUser = new ChatUser();
                 BeanUtils.copyProperties(chatMessagePO, chatMessageItemVo);
-
                 //当为群类型消息时才查询用户信息
-                if(chatType==Constant.GROUP_TYPE){
+                if(chatType==Constant.GROUP_TYPE&&chatMessageType!=Constant.SUB_MESSAGE_TYPE){
                     if(!chatUserMap.containsKey(fromId)){
                         XiuXianUserEntity xiuXianUser = xiuXianUserService.getXiuXianUser(fromId);
                         String remark = friendsService.getFriendRemark(selfXiuxianId, fromId);
@@ -91,16 +92,19 @@ public class ChatListServiceImpl implements ChatListService {
                         chatUser = chatUserMap.get(fromId);
                     }
                 }
-
                 chatMessageItemVo.setChatUser(chatUser);
                 return chatMessageItemVo;
             }).collect(Collectors.toList());
 
             FriendsEntity friendsEntity = friendListService.getFriendRelByselfXiuxianIdAndFriendXiuxianId(selfXiuxianId, friendXiuxianId);
-            BeanUtils.copyProperties(item, chatListItemVo);
 
-            chatListItemVo.setRemark(friendsEntity.getRemark());
-            chatListItemVo.setType(friendsEntity.getType());
+            BeanUtils.copyProperties(item, chatListItemVo);
+            if(friendsEntity!=null){
+                chatListItemVo.setRemark(friendsEntity.getRemark());
+                chatListItemVo.setType(friendsEntity.getType());
+            }
+
+            chatListItemVo.setStartTime(startTime);
 
             if (chatType == Constant.FRIEND_TYPE) {
                 XiuXianUserEntity xianUserEntity = xiuXianUserService.getXiuXianUser(friendXiuxianId);
@@ -143,11 +147,7 @@ public class ChatListServiceImpl implements ChatListService {
                 .eq("self_xiuxian_id", chatListItemRelVo.getSelfXiuxianId())
                 .eq("friend_xiuxian_id", chatListItemRelVo.getFriendXiuxianId()));
 
-
-        if(friendsService.isFriends(chatListItemRelVo.getSelfXiuxianId(),chatListItemRelVo.getFriendXiuxianId())){
-            //设置起始时间(单方面)
-            friendsService.setStartTime(chatListItemRelVo.getSelfXiuxianId(),chatListItemRelVo.getFriendXiuxianId(),new Date().getTime());
-        }else { //如果双方都不是朋友，删除所有聊天记录
+        if(!friendsService.isFriends(chatListItemRelVo.getSelfXiuxianId(),chatListItemRelVo.getFriendXiuxianId())){ //如果双方都不是朋友，删除所有聊天记录
             if(!friendsService.isFriends(chatListItemRelVo.getFriendXiuxianId(),chatListItemRelVo.getSelfXiuxianId())){
                 //删除自己相关的聊天记录
                 chatMessageService.deleteChatMessageByChatListItemRel(chatListItemRelVo);
@@ -172,6 +172,14 @@ public class ChatListServiceImpl implements ChatListService {
                 .eq("self_xiuxian_id", fromId)
                 .eq("friend_xiuxian_id", toId));
         return chatListEntity!=null;
+    }
+
+    @Override
+    public void updateStartTime(String xiuxianUserId, String xiuxianGroupId, long startTime) {
+        ChatListEntity chatListEntity = new ChatListEntity();
+        chatListEntity.setStartTime(startTime);
+        chatListDao.update(chatListEntity,new UpdateWrapper<ChatListEntity>().eq("self_xiuxian_id", xiuxianUserId)
+                .eq("friend_xiuxian_id", xiuxianGroupId));
     }
 
 

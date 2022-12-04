@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Mark sunlightcs@gmail.com
  */
 @Slf4j
-@Component
+//@Component
 public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private TokenService tokenService;

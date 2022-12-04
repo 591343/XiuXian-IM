@@ -5,6 +5,8 @@ import com.xiuxian.chat.vo.chatlist.ChatListItemRelVo;
 import com.xiuxian.chat.vo.chatlist.ChatListItemVo;
 import com.xiuxian.chat.vo.chatlist.ChatListVo;
 
+import java.util.List;
+
 
 /**
  * 聊天列表
@@ -22,4 +24,6 @@ public interface ChatListService {
     void deleteChatListItem(ChatListItemRelVo chatListItemRelVo);
 
     Boolean isChatRel(String fromId, String toId);
+
+    void updateStartTime(String xiuxianUserId, String xiuxianGroupId, long startTime);
 }

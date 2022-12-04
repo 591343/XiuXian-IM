@@ -15,4 +15,6 @@ public interface XiuXianUserService {
     void addXiuxianUserInfo(XiuXianUserDTO xiuXianUserDTO);
 
     Integer isXiuXianUserExist(String xiuxianUserId);
+
+    String getNickname(String xiuxianUserId);
 }

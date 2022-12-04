@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.xiuxian.chat.interceptor.AuthorizationInterceptor;
 
 import com.xiuxian.common.utils.DateUtils;
 
@@ -40,16 +39,6 @@ import java.util.TimeZone;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    @Autowired
-    private AuthorizationInterceptor authorizationInterceptor;
-
-
-
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authorizationInterceptor).addPathPatterns("/api/**");
-    }
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {

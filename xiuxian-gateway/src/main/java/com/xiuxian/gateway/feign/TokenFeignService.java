@@ -1,8 +1,9 @@
-package com.xiuxian.thirdparty.feign;
+package com.xiuxian.gateway.feign;
 
 
-import com.xiuxian.thirdparty.entity.TokenEntity;
 import com.xiuxian.common.utils.Result;
+import com.xiuxian.gateway.entity.TokenEntity;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

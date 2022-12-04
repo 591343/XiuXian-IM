@@ -46,6 +46,7 @@ spring:
       max-request-size: 100MB
       enabled: true
 
+
 feign:
   client:
     config:

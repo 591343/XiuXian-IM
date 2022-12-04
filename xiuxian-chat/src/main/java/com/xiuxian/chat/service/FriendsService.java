@@ -23,7 +23,7 @@ public interface FriendsService {
 
     void acceptFriend(AcceptFriendVo acceptFriendVo);
 
-    void deleteFriend(FriendListItemRelVo friendListItemRelVo);
+    void deleteFriend(FriendListItemRelVo friendListItemRelVo,Integer friendType);
 
     void changeRemark(ChangeFriendRemarkVo changeFriendRemarkVo);
 

@@ -14,11 +14,17 @@ import com.xiuxian.websocket.message.Pong;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundSetOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -35,13 +41,25 @@ public class WSController {
 
     @Autowired
     private ChatMessageFeignService chatMessageFeignService;
+    
+    
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    private final String ONLINE_KEY="XIUXIANIM:WS:ONLINE:USER:";  //在线用户键
 
     //用于心跳检测
     @PostMapping("/heartbeatCheck")
     public Result heartbeatCheck(@RequestBody Ping ping) {
-        System.out.println(ping);
         Pong pong = new Pong();
-        pong.setToId(ping.getFromId());
+        String fromId = ping.getFromId();
+        pong.setToId(fromId);
+
+        // 正常情况下服务器只需要在新建连接或者断开连接的时候更新一下Redis就好了。但由于服务器可能会出现异常，或者服务器跟Redis之间的网络会出现问题，
+        // 此时基于事件的更新就会出现问题，导致用户状态不正确。因此，如果需要用户在线状态准确的话最好通过心跳来更新在线状态。
+        ValueOperations<String, String> onlineUserOps = stringRedisTemplate.opsForValue();
+        onlineUserOps.set(ONLINE_KEY+fromId,fromId,5, TimeUnit.SECONDS); //设置5s过期
+
         simpMessagingTemplate.convertAndSendToUser(ping.getFromId(), "/heartbeat", pong);
         return new Result();
     }
@@ -79,7 +97,7 @@ public class WSController {
         simpMessagingTemplate.convertAndSendToUser(noticeMessage.getToId(),"/notice",noticeMessage);
         return new Result<>();
     }
-    //群发 订阅/topic/notice/{xiuxianGroupId}
+    //群发 订阅/top/{xiuxianGroupId}
     @PostMapping("/sendNoticeMessageToGroup")
     public Result sendNoticeMessageToGroup(@RequestBody NoticeMessage noticeMessage) {
         simpMessagingTemplate.convertAndSend("/topic/notice/" + noticeMessage.getToId(), noticeMessage);

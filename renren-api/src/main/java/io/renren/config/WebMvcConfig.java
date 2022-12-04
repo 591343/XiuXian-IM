@@ -42,16 +42,7 @@ import java.util.TimeZone;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
-    private AuthorizationInterceptor authorizationInterceptor;
-    @Autowired
     private LoginUserHandlerMethodArgumentResolver loginUserHandlerMethodArgumentResolver;
-
-
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authorizationInterceptor).addPathPatterns("/api/**");
-    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {

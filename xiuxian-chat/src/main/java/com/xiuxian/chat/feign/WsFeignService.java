@@ -19,6 +19,10 @@ public interface WsFeignService {
     @PostMapping("/api/ws/sendMsgToUser")
     Result sendMsgByUser(@RequestBody ChatMessage chatMessage);
 
+    //群聊 订阅/topic/info/{xiuxianGroupId}
+    @PostMapping("/api/ws/sendMsgToGroup")
+    Result sendMsgToGroup(@RequestBody ChatMessage chatMessage);
+
     @PostMapping("/api/ws/sendNoticeMessageToGroup")
     Result sendNoticeMessageToGroup(@RequestBody NoticeMessage noticeMessage);
 }

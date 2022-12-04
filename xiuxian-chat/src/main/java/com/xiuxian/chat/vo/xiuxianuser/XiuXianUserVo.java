@@ -20,4 +20,6 @@ public class XiuXianUserVo {
     private String profile;
     @ApiModelProperty(value = "修仙用户昵称")
     private String nickname;
+    @ApiModelProperty(value = "修仙用户备注")
+    private String remark;
 }

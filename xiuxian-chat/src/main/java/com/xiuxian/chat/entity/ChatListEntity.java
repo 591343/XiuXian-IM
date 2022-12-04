@@ -36,4 +36,9 @@ public class ChatListEntity {
      * 朋友类型 0朋友 1群组
      */
     private Integer type;
+
+    /**
+     * 用户聊天记录的起始时间，为NULL代表没有删除过聊天
+     */
+    private Long startTime;
 }

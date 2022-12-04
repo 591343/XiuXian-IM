@@ -55,12 +55,13 @@ public interface Constant {
     int IMAGE_CHAT_MESSAGE_TYPE=1;
 
 
-    /**
-     * 公群公告消息
-     */
+    // 子消息(用于在聊天框内小字显示)
+    int SUB_MESSAGE_TYPE=2;
 
-    int GROUP_ANNOUNCEMENT_MESSAGE_TYPE=2;
-
+    //邀请成员加入
+    int SUB_MESSAGE_GROUP_MEMBER_ADD=0;
+    //将成员移出群聊
+    int SUB_MESSAGE_GROUP_MEMBER_REMOVE=1;
     /**
      * 个人名片推送消息
      */
